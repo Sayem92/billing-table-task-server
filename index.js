@@ -20,7 +20,21 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
 
-        
+        const usersCollection = client.db("billingPage").collection("users");
+
+
+        //save user data ---------
+        app.post('/users', async (req, res) => {
+            const user = req.body
+            const email = user.email
+            const filter = { email: email }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: user,
+            }
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
 
 
 
