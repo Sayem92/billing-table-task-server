@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const { query } = require('express');
 require('dotenv').config();
 
 
@@ -24,7 +25,7 @@ async function run() {
 
 
         //save user data ---------
-        app.post('/users', async (req, res) => {
+        app.put('/registration', async (req, res) => {
             const user = req.body
             const email = user.email
             const filter = { email: email }
@@ -33,6 +34,13 @@ async function run() {
                 $set: user,
             }
             const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
+
+
+        //save user login api ---------
+        app.get('/login', async (req, res) => {
+            const result = await usersCollection.find({}).toArray();
             res.send(result);
         });
 
