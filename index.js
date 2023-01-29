@@ -23,6 +23,7 @@ async function run() {
 
         const usersCollection = client.db("billingPage").collection("users");
 
+        const billingListCollection = client.db("billingPage").collection("billingList");
 
         //save user data ---------
         app.put('/registration', async (req, res) => {
@@ -43,6 +44,13 @@ async function run() {
             const result = await usersCollection.find({}).toArray();
             res.send(result);
         });
+
+        //get billing list ---------
+        app.get('/billing-list', async (req, res) => {
+            const result = await billingListCollection.find({}).toArray();
+            res.send(result);
+        });
+
 
 
 
