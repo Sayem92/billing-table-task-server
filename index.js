@@ -51,6 +51,13 @@ async function run() {
             res.send(result);
         });
 
+        //add a new billing ---------
+        app.post('/add-billing', async (req, res) => {
+            const newBill = req.body;
+            const result = await billingListCollection.insertOne(newBill);
+            res.send(result);
+        });
+
 
 
 
