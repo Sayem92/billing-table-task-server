@@ -67,7 +67,13 @@ async function run() {
             res.send(result);
         });
 
-
+        //get billing list ---------
+        app.get('/update-billing/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await billingListCollection.findOne(query);
+            res.send(result);
+        });
 
 
 
