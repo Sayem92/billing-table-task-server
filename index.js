@@ -76,6 +76,20 @@ async function run() {
         });
 
 
+        //update a bill ---------
+        app.put('/update-billing', async (req, res) => {
+            const updateBill = req.body
+            const email = updateBill.email
+            const filter = { email: email }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: updateBill,
+            }
+            const result = await billingListCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
+
+
 
 
     }
