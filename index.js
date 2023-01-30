@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const { query } = require('express');
 require('dotenv').config();
 
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -24,6 +24,21 @@ async function run() {
         const usersCollection = client.db("billingPage").collection("users");
 
         const billingListCollection = client.db("billingPage").collection("billingList");
+
+        
+        //create jwt---------
+        app.get('/jwt', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            if (user) {
+                const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '10d' });
+                return res.send({ accessToken: token })
+            }
+
+            res.status(403).send({ accessToken: 'no token available' })
+
+        });
 
         //save user data ---------
         app.put('/registration', async (req, res) => {
