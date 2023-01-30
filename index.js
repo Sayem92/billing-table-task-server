@@ -83,9 +83,9 @@ async function run() {
             const page = parseInt(req.query.page);
             const size = parseInt(req.query.size);
             const query = {}
-            const cursor = billingListCollection.find(query);
+            const cursor = billingListCollection.find(query).sort({ date: 1 });
             const bills = await cursor.skip(page * size).limit(size).toArray();
-            
+
             // pagination----------
             const count = await billingListCollection.estimatedDocumentCount()
             res.send({ count, bills })
