@@ -80,8 +80,15 @@ async function run() {
 
         //get billing list ---------
         app.get('/billing-list', verifyJWT, async (req, res) => {
-            const result = await billingListCollection.find({}).toArray();
-            res.send(result);
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+            const query = {}
+            const cursor = billingListCollection.find(query);
+            const bills = await cursor.skip(page * size).limit(size).toArray();
+            
+            // pagination----------
+            const count = await billingListCollection.estimatedDocumentCount()
+            res.send({ count, bills })
         });
 
         //add a new billing ---------
